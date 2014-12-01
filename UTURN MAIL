@@ -1,0 +1,86 @@
+UTURN MAIL
+
+ec2-54-174-20-21.compute-1.amazonaws.com
+
+//connect to console
+ec2-get-console-output i-0d7fe1ec
+//connect 
+// go to /UTurnMail/
+ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-174-20-21.compute-1.amazonaws.com
+ssh -i uturnmail-1-19-11-14.pem ubuntu@54.173.197.31
+
+tail -f /var/log/mail.log
+
+tail -f /var/log/auth.log
+
+
+_______________________________________
+// tests
+//courier test
+telnet 127.0.0.1 143
+
+
+//amavis test 
+telnet localhost 10024
+
+//postfix test
+EHLO mail.example.org
+MAIL FROM: <xandros@example.org>
+RCPT TO: <you@example.com>
+data
+muck
+.
+quit
+
+_______________________________________
+//settings
+//courier
+sudo vi /etc/courier/authmysqlrc
+sudo vi /etc/courier/authdaemonrc
+vi /etc/courier/imapd
+
+//amavis
+cd /etc/amavis/conf.d
+ll
+
+//spam assassin settings
+sudo nano /etc/default/spamassassin
+sudo vi /etc/spamassassin/local.cf
+
+//clamav 
+sudo dpkg-reconfigure clamav-freshclam
+sudo dpkg-reconfigure clamav-base //alot of questions
+
+//postgrey
+/etc/postgrey
+/etc/default/postgrey
+
+//roundcube
+sudo vi /etc/roundcube/main.inc.php
+
+//sasl 
+sudo vi /etc/default/saslauthd
+sudo vi /etc/postfix/sasl/smtpd.conf
+
+//pam
+sudo vi /etc/pam.d/smtp
+
+
+auth required pam_mysql.so user=mail passwd=Alife1991
+			host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
+account sufficient pam_mysql.so user=mail passwd=Alife1991
+			host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
+
+_______________________________________
+//database
+
+tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com:3306
+webapptinaturner
+Alife1991
+webapp
+
+//roundcube
+
+//phpmyadmin
+phpmyadmin-tinaturner
+
