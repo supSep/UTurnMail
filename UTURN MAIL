@@ -8,6 +8,8 @@ ec2-get-console-output i-0d7fe1ec
 // go to /UTurnMail/
 ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-174-20-21.compute-1.amazonaws.com
 ssh -i uturnmail-1-19-11-14.pem ubuntu@54.173.197.31
+ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-174-20-21.compute-1.amazonaws.com
+ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-165-112-163.compute-1.amazonaws.com
 
 tail -f /var/log/mail.log
 
@@ -24,13 +26,22 @@ telnet 127.0.0.1 143
 telnet localhost 10024
 
 //postfix test
-EHLO mail.example.org
-MAIL FROM: <xandros@example.org>
-RCPT TO: <you@example.com>
+telnet localhost 25
+EHLO mail.uturnmail.com
+
+MAIL FROM: sepehr.tah@gmail.com
+RCPT TO: sept@uturnmail.com
+_________________________
+MAIL FROM: sept@uturnmail.com
+RCPT TO: sepehr.tah@gmail.com
+
 data
 muck
 .
 quit
+
+sudo ln -s  /var/run/saslauthd /mnt/spool/postfix/var/run/saslauthd
+
 
 _______________________________________
 //settings
