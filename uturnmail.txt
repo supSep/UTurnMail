@@ -27,13 +27,18 @@ telnet localhost 10024
 
 //postfix test
 telnet localhost 25
+
+//tls test
+openssl s_client -connect localhost:465
+openssl s_client -connect localhost:587 -starttls smtp
+
 EHLO mail.uturnmail.com
 
 MAIL FROM: sepehr.tah@gmail.com
-RCPT TO: sept@uturnmail.com
+rcpt to: sept@uturnmail.com
 _________________________
 MAIL FROM: sept@uturnmail.com
-RCPT TO: sepehr.tah@gmail.com
+rcpt to: sepehr.tah@gmail.com
 
 data
 muck
@@ -95,3 +100,31 @@ webapp
 //phpmyadmin
 phpmyadmin-tinaturner
 
+
+
+
+//test auth
+sudo testsaslauthd -u sept@uturnmail.com -p @life1991 -f /mnt/spool/postfix/var/run/saslauthd/mux -s smtp
+
+
+
+
+/////restart
+
+sudo /etc/init.d/postfix stop
+sudo /etc/init.d/courier-imap-ssl stop
+sudo /etc/init.d/courier-imap stop
+sudo /etc/init.d/courier-authdaemon stop
+sudo /etc/init.d/mysql stop
+sudo /etc/init.d/amavisd stop
+sudo /etc/init.d/spamassassin stop
+sudo /etc/init.d/clamav stop
+
+sudo /etc/init.d/postfix start
+sudo /etc/init.d/courier-imap-ssl start
+sudo /etc/init.d/courier-imap start
+sudo /etc/init.d/courier-authdaemon start
+sudo /etc/init.d/mysql start
+sudo /etc/init.d/amavisd start
+sudo /etc/init.d/spamassassin start
+sudo /etc/init.d/clamav start
