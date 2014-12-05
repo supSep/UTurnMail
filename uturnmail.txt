@@ -28,8 +28,9 @@ telnet localhost 10024
 //postfix test
 telnet localhost 25
 
-//tls test
+// smtps
 openssl s_client -connect localhost:465
+//tls test
 openssl s_client -connect localhost:587 -starttls smtp
 
 EHLO mail.uturnmail.com
@@ -102,6 +103,8 @@ phpmyadmin-tinaturner
 
 
 
+//launch saslauthd
+/usr/sbin/saslauthd -m /var/run/saslauthd -a pam -n 0 -c
 
 //test auth
 sudo testsaslauthd -u sept@uturnmail.com -p @life1991 -f /mnt/spool/postfix/var/run/saslauthd/mux -s smtp
