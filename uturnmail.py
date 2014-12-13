@@ -2,24 +2,22 @@ import email, boto.sqs, sys, time, smtplib
 from random import randrange
 from pprint import pprint
 
-#raw = sys.stdin.readlines()
-#msg = email.message_from_file(''.join(raw))
-#msg = sys.stdin.readlines()
-#raw = ""
-#while True:
-#    raw += sys.stdin.readline()
-#    if not line:
-#       break
-
 msg = email.message_from_file(sys.stdin)
 timestamp = "Id: "+  str(randrange(10))+" Time: " + time.strftime("%c")
+sender = "From : " +  msg.get_unixfrom()
+payload = "Message: "
+for item in msg.get_payload():
+        payload += item.as_string(False)
 
 logFile=open('/mnt/spool/uturnmail/script_logs/uno.txt', 'w')
-pprint(vars(msg),logFile)
-pprint(timestamp, logFile)
+#pprint(sender, logFile)
+#pprint(payload, logFile)
+#pprint(timestamp, logFile)
 
-del logFile
-del msg 
+result = timestamp + sender + payload
+logFile.write(result)
+
+del logFile, msg, item, payload, sender 
 
 #<----------------------------------------------------------------------------->
 #Will implement save email to a file first to examine it
@@ -31,7 +29,9 @@ del msg
 #<------------------------------------------------------------------------------>
 
 client = smtplib.SMTP('127.0.0.1', 10025)
-client.sendmail("sepehr.tah@gmail.com", "sept@uturnmail.com", timestamp)
+client.sendmail("sepehr.tah@gmail.com", "sept@uturnmail.com", result)
 client.quit()
+del client
 
 sys.exit(0)
+
