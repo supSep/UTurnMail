@@ -4,8 +4,8 @@ from pprint import pprint
 
 
 
-def postfix_filter():
-	msg = email.message_from_file(sys.stdin)
+def postfix_filter(content):
+	msg = email.message_from_file(content)
 	timestamp = "Id: "+  str(randrange(10))+" Time: " + time.strftime("%c")
 	sender = "From : " +  msg.get_unixfrom()
 	payload = "Message: "
@@ -15,7 +15,7 @@ def postfix_filter():
 	try:
 	    LogFile=open('/mnt/spool/uturnmail/script_logs/uno.txt', 'w')
 	except Exception, e:
-	     print "Error: unable to open file"
+	     print "Error: unable to open file ---->" + str(e)
     
 
 	result = sender + payload + timestamp
@@ -43,7 +43,7 @@ def backup():
 
 
 try:
-	thread.start_new_thread( postfix_filter, () )	
+	thread.start_new_thread(postfix_filter, (sys.stdin,))	
 except Exception, e:
-	 print "Error: unable to start thread"
+	 print "Error: unable to start thread -->" + str(e)
 
