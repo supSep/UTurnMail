@@ -1,37 +1,53 @@
-import email, boto.sqs, sys, time, smtplib
+import email, boto.sqs, sys, time, smtplib, thread
 from random import randrange
 from pprint import pprint
 
-msg = email.message_from_file(sys.stdin)
-timestamp = "Id: "+  str(randrange(10))+" Time: " + time.strftime("%c")
-sender = "From : " +  msg.get_unixfrom()
-payload = "Message: "
-for item in msg.get_payload():
-        payload += item.as_string(False)
 
-logFile=open('/mnt/spool/uturnmail/script_logs/uno.txt', 'w')
-#pprint(sender, logFile)
-#pprint(payload, logFile)
-#pprint(timestamp, logFile)
 
-result = timestamp + sender + payload
-logFile.write(result)
+def postfix_filter():
+	msg = email.message_from_file(sys.stdin)
+	timestamp = "Id: "+  str(randrange(10))+" Time: " + time.strftime("%c")
+	sender = "From : " +  msg.get_unixfrom()
+	payload = "Message: "
+	for item in msg.get_payload():
+	        payload += item.as_string(False)
 
-del logFile, msg, item, payload, sender 
+	try:
+	    LogFile=open('/mnt/spool/uturnmail/script_logs/uno.txt', 'w')
+	except Exception, e:
+	     print "Error: unable to open file"
+    
 
-#<----------------------------------------------------------------------------->
-#Will implement save email to a file first to examine it
-#AMAZON SQS
-#conn = boto.sqs.connect_to_region("us-east-1", aws_access_key_id='AKIAJ465WWFWWSIUEKIQ', aws_secret_access_key='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')
-#Get the queue
-#queue = conn.get_queue('myqueue')
-#message = "Time of Python Exec." +  time.strftime("%c") + "\n" + vars(msg)
-#<------------------------------------------------------------------------------>
+	result = sender + payload + timestamp
+	logFile.write(result)
 
-client = smtplib.SMTP('127.0.0.1', 10025)
-client.sendmail("sepehr.tah@gmail.com", "sept@uturnmail.com", result)
-client.quit()
-del client
+	del logFile, msg, item, payload, sender 
 
-sys.exit(0)
+	#<----------------------------------------------------------------------------->
+	#Will implement save email to a file first to examine it
+	#AMAZON SQS
+	#conn = boto.sqs.connect_to_region("us-east-1", aws_access_key_id='AKIAJ465WWFWWSIUEKIQ', aws_secret_access_key='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')
+	#Get the queue
+	#queue = conn.get_queue('myqueue')
+	#message = "Time of Python Exec." +  time.strftime("%c") + "\n" + vars(msg)
+	#<------------------------------------------------------------------------------>
+
+	client = smtplib.SMTP('127.0.0.1', 10025)
+	client.sendmail("sepehr.tah@gmail.com", "sept@uturnmail.com", result)
+	client.quit()
+	del client
+	sys.exit(0)
+
+def backup():
+	print "Error: script backup function called !!!!!!!"
+
+
+try:
+	thread.start_new_thread( postfix_filter, () )	
+except Exception, e:
+	 print "Error: unable to start thread"
+else:
+	pass
+finally:
+	pass
 
