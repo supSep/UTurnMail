@@ -46,8 +46,4 @@ try:
 	thread.start_new_thread( postfix_filter, () )	
 except Exception, e:
 	 print "Error: unable to start thread"
-else:
-	pass
-finally:
-	pass
 
