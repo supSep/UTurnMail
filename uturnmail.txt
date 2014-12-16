@@ -95,6 +95,9 @@ webapptinaturner
 Alife1991
 webapp
 
+//rabbitmq
+adgurusep:@life1991
+
 //roundcube
 
 //phpmyadmin
