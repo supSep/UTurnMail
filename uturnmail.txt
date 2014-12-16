@@ -1,27 +1,28 @@
 UTURN MAIL
 
-ec2-54-174-20-21.compute-1.amazonaws.com
-
 //connect to console
 ec2-get-console-output i-0d7fe1ec
-//connect 
+
 // go to /UTurnMail/
 ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-165-112-163.compute-1.amazonaws.com
-//go to tinaturner-queu
+
+//go to tinaturner-queue
 ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-165-7-68.compute-1.amazonaws.com
 
-
-
 tail -f /var/log/mail.log
-
 tail -f /var/log/auth.log
+tail -f /mnt/spool/uturnmail/script_logs/uno.txt
 
-
-_______________________________________
+______________________________________
 // tests
+//launch saslauthd
+/usr/sbin/saslauthd -m /var/run/saslauthd -a pam -n 0 -c
+
+//test auth
+sudo testsaslauthd -u sept@uturnmail.com -p @life1991 -f /mnt/spool/postfix/var/run/saslauthd/mux -s smtp
+
 //courier test
 telnet 127.0.0.1 143
-
 
 //amavis test 
 telnet localhost 10024
@@ -31,14 +32,17 @@ telnet localhost 25
 
 // smtps
 openssl s_client -connect localhost:465
+
 //tls test
 openssl s_client -connect localhost:587 -starttls smtp
 
+
+// mail test
 EHLO mail.uturnmail.com
 
 MAIL FROM: sepehr.tah@gmail.com
 rcpt to: sept@uturnmail.com
-_________________________
+_________OR______________
 MAIL FROM: sept@uturnmail.com
 rcpt to: sepehr.tah@gmail.com
 
@@ -46,72 +50,6 @@ data
 muck
 .
 quit
-
-sudo ln -s  /var/run/saslauthd /mnt/spool/postfix/var/run/saslauthd
-
-
-_______________________________________
-//settings
-//courier
-sudo vi /etc/courier/authmysqlrc
-sudo vi /etc/courier/authdaemonrc
-vi /etc/courier/imapd
-
-//amavis
-cd /etc/amavis/conf.d
-ll
-
-//spam assassin settings
-sudo nano /etc/default/spamassassin
-sudo vi /etc/spamassassin/local.cf
-
-//clamav 
-sudo dpkg-reconfigure clamav-freshclam
-sudo dpkg-reconfigure clamav-base //alot of questions
-
-//postgrey
-/etc/postgrey
-/etc/default/postgrey
-
-//roundcube
-sudo vi /etc/roundcube/main.inc.php
-
-//sasl 
-sudo vi /etc/default/saslauthd
-sudo vi /etc/postfix/sasl/smtpd.conf
-
-//pam
-sudo vi /etc/pam.d/smtp
-
-
-auth required pam_mysql.so user=mail passwd=Alife1991 host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
-account sufficient pam_mysql.so user=mail passwd=Alife1991 host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
-
-_______________________________________
-//database
-
-tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com:3306
-webapptinaturner
-Alife1991
-webapp
-
-//rabbitmq
-adgurusep:@life1991
-
-//roundcube
-
-//phpmyadmin
-phpmyadmin-tinaturner
-
-
-
-//launch saslauthd
-/usr/sbin/saslauthd -m /var/run/saslauthd -a pam -n 0 -c
-
-//test auth
-sudo testsaslauthd -u sept@uturnmail.com -p @life1991 -f /mnt/spool/postfix/var/run/saslauthd/mux -s smtp
-
-
 
 
 /////restart
@@ -135,9 +73,3 @@ sudo /etc/init.d/spamassassin start
 sudo /etc/init.d/clamav start
 
 
-//access keys
- Sep
-Access Key ID:
-AKIAJ465WWFWWSIUEKIQ
-Secret Access Key:
-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

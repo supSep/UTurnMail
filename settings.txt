@@ -42,8 +42,18 @@ webapptinaturner
 Alife1991
 webapp
 
+//rabbitmq
+adgurusep:@life1991
+
 //roundcube
 
 //phpmyadmin
 phpmyadmin-tinaturner
 
+
+//access keys
+ Sep
+Access Key ID:
+AKIAJ465WWFWWSIUEKIQ
+Secret Access Key:
+kA8TVCAS8VKafAfS0P0XSIU+iW0IQPJvDs/OKALg
