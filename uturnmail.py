@@ -15,6 +15,7 @@ msg = email.message_from_file(sys.stdin)
 data = {}
 data["hash"] = 25252525
 data["timestamp"] =  time.strftime("%c")
+data["recipient"] = "sept@uturnmail.com"
 data["sender"] = extract_email(msg.get_unixfrom())
 data["urls"] = []
 urls = []
@@ -35,7 +36,7 @@ for i in urls:
 result = json.dumps(data)
 logFile.write(result)
 
-del logFile, msg, data, item
+del logFile, msg, item
 #<----------------------------------------------------------------------------->
 #Will implement save email to a file first to examine it
 #AMAZON SQS
@@ -46,8 +47,8 @@ del logFile, msg, data, item
 #<------------------------------------------------------------------------------>
 
 client = smtplib.SMTP('127.0.0.1', 10025)
-client.sendmail("sepehr.tah@gmail.com", "sept@uturnmail.com", str(result))
+client.sendmail(data["sender"], data["recipient"], str(result))
 client.quit()
-del client
+del client, data
 sys.exit(0)
 
