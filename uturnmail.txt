@@ -7,6 +7,10 @@ ec2-get-console-output i-0d7fe1ec
 //connect 
 // go to /UTurnMail/
 ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-165-112-163.compute-1.amazonaws.com
+//go to tinaturner-queu
+ssh -i uturnmail-1-19-11-14.pem ubuntu@ec2-54-165-7-68.compute-1.amazonaws.com
+
+
 
 tail -f /var/log/mail.log
 
@@ -128,3 +132,11 @@ sudo /etc/init.d/mysql start
 sudo /etc/init.d/amavisd start
 sudo /etc/init.d/spamassassin start
 sudo /etc/init.d/clamav start
+
+
+//access keys
+ Sep
+Access Key ID:
+AKIAJ465WWFWWSIUEKIQ
+Secret Access Key:
+kA8TVCAS8VKafAfS0P0XSIU+iW0IQPJvDs/OKALg
