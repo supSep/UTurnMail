@@ -1,25 +1,42 @@
-import email, boto.sqs, sys, time, smtplib, thread
-from random import randrange
+import email, boto.sqs, sys, time, smtplib, json, re, quopri
+from bs4 import BeautifulSoup
 from pprint import pprint
 
+def is_email(email):
+	return re.match(r'[\w\.-]+@[\w\.-]+', email)
+
+def extract_email(email):
+	return re.search(r'[\w\.-]+@[\w\.-]+', email).group(0)
+
+def validate(url):
+	return "." in url
+
 msg = email.message_from_file(sys.stdin)
-timestamp = "Id: "+  str(randrange(10))+" Time: " + time.strftime("%c")
-sender = "From : " +  msg.get_unixfrom()
-payload = "Message: "
+data = {}
+data["hash"] = 25252525
+data["timestamp"] =  time.strftime("%c")
+data["recipient"] = "sept@uturnmail.com"
+data["sender"] = extract_email(msg.get_unixfrom())
+data["urls"] = []
+urls = []
+
 for item in msg.get_payload():
-        payload += item.as_string(False)
+       	soup = BeautifulSoup(item.as_string(False))
+	urls.extend(soup.select('a[href]'))
 
 try:
-    LogFile=open('/mnt/spool/uturnmail/script_logs/uno.txt', 'w')
+    logFile=open('/mnt/spool/uturnmail/script_logs/uno.txt', 'w')
 except Exception, e:
      print "Error: unable to open file ---->" + str(e)
 
+for i in urls:
+	if i.string != None and validate(i.string) and not is_email(i.string):	
+		data["urls"].append(quopri.decodestring(i.string.encode('utf-8').strip()))
 
-result = sender + payload + timestamp
+result = json.dumps(data)
 logFile.write(result)
 
-del logFile, msg, item, payload, sender 
-
+del logFile, msg, item
 #<----------------------------------------------------------------------------->
 #Will implement save email to a file first to examine it
 #AMAZON SQS
@@ -30,8 +47,8 @@ del logFile, msg, item, payload, sender
 #<------------------------------------------------------------------------------>
 
 client = smtplib.SMTP('127.0.0.1', 10025)
-client.sendmail("sepehr.tah@gmail.com", "sept@uturnmail.com", result)
+client.sendmail(data["sender"], data["recipient"], str(result))
 client.quit()
-del client
+del client, data
 sys.exit(0)
 

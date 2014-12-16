@@ -1,0 +1,49 @@
+//settings
+//courier
+sudo vi /etc/courier/authmysqlrc
+sudo vi /etc/courier/authdaemonrc
+vi /etc/courier/imapd
+
+//amavis
+cd /etc/amavis/conf.d
+ll
+
+//spam assassin settings
+sudo nano /etc/default/spamassassin
+sudo vi /etc/spamassassin/local.cf
+
+//clamav 
+sudo dpkg-reconfigure clamav-freshclam
+sudo dpkg-reconfigure clamav-base //alot of questions
+
+//postgrey
+/etc/postgrey
+/etc/default/postgrey
+
+//roundcube
+sudo vi /etc/roundcube/main.inc.php
+
+//sasl 
+sudo vi /etc/default/saslauthd
+sudo vi /etc/postfix/sasl/smtpd.conf
+
+//pam
+sudo vi /etc/pam.d/smtp
+
+
+auth required pam_mysql.so user=mail passwd=Alife1991 host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
+account sufficient pam_mysql.so user=mail passwd=Alife1991 host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
+
+_______________________________________
+//database
+
+tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com:3306
+webapptinaturner
+Alife1991
+webapp
+
+//roundcube
+
+//phpmyadmin
+phpmyadmin-tinaturner
+

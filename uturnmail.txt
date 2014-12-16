@@ -84,10 +84,8 @@ sudo vi /etc/postfix/sasl/smtpd.conf
 sudo vi /etc/pam.d/smtp
 
 
-auth required pam_mysql.so user=mail passwd=Alife1991
-			host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
-account sufficient pam_mysql.so user=mail passwd=Alife1991
-			host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
+auth required pam_mysql.so user=mail passwd=Alife1991 host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
+account sufficient pam_mysql.so user=mail passwd=Alife1991 host=tina-turner-the-sql.cyi1znodd9le.us-east-1.rds.amazonaws.com db=webapp table=users usercolumn=id passwdcolumn=crypt crypt=1
 
 _______________________________________
 //database
